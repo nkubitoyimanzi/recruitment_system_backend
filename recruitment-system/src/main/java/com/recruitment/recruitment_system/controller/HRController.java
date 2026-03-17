@@ -15,37 +15,37 @@ public class HRController {
     @Autowired
     private ApplicationService applicationService;
 
-    // Get applications with pagination + search
+    // ✅ GET applications with pagination + search
     @GetMapping("/applications")
     public Page<Application> getApplications(
-
             @RequestParam(defaultValue = "") String search,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
-
     ) {
-
         return applicationService.getApplicationsForHR(search, page, size);
     }
 
-    // Accept application
+    // ✅ ACCEPT
     @PutMapping("/accept/{id}")
-    public Application accept(@PathVariable Long id) {
-        return applicationService.updateStatus(id, "ACCEPTED", null);
+    public String acceptApplication(@PathVariable Long id) {
+        applicationService.acceptApplication(id);
+        return "Application accepted";
     }
 
-    // Reject application
+    // ✅ REJECT
     @PutMapping("/reject/{id}")
-    public Application reject(
+    public String rejectApplication(
             @PathVariable Long id,
             @RequestParam String reason
     ) {
-        return applicationService.updateStatus(id, "REJECTED", reason);
+        applicationService.rejectApplication(id, reason);
+        return "Application rejected";
     }
 
-    // Delete application
+    // ✅ DELETE
     @DeleteMapping("/delete/{id}")
-    public void deleteApplication(@PathVariable Long id) {
+    public String deleteApplication(@PathVariable Long id) {
         applicationService.deleteApplication(id);
+        return "Application deleted";
     }
 }

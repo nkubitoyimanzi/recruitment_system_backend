@@ -3,6 +3,7 @@ package com.recruitment.recruitment_system.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "application")
 public class Application {
 
     @Id
@@ -14,15 +15,16 @@ public class Application {
     private String email;
     private String phone;
 
-    private String cvFileName;
-
     private String status;
-
     private String rejectionReason;
 
-    @ManyToOne
-    @JoinColumn(name = "job_id")
-    private Job job;
+    // ✅ Store Cloudinary URL instead of file name
+    @Column(name = "cv_url", columnDefinition = "TEXT")
+    private String cvUrl;
+
+    private Long jobId;
+
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -34,6 +36,10 @@ public class Application {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLastName() {
@@ -60,14 +66,6 @@ public class Application {
         this.phone = phone;
     }
 
-    public String getCvFileName() {
-        return cvFileName;
-    }
-
-    public void setCvFileName(String cvFileName) {
-        this.cvFileName = cvFileName;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -84,11 +82,19 @@ public class Application {
         this.rejectionReason = rejectionReason;
     }
 
-    public Job getJob() {
-        return job;
+    public String getCvUrl() {
+        return cvUrl;
     }
 
-    public void setJob(Job job) {
-        this.job = job;
+    public void setCvUrl(String cvUrl) {
+        this.cvUrl = cvUrl;
+    }
+
+    public Long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
 }

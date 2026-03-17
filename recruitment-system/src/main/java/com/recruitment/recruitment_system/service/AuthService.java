@@ -18,7 +18,14 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
 
+    // ===============================
+    // REGISTER
+    // ===============================
     public String register(RegisterRequest request) {
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return "Email already exists";
+        }
 
         User user = new User();
 
@@ -32,6 +39,9 @@ public class AuthService {
         return "User registered successfully";
     }
 
+    // ===============================
+    // LOGIN
+    // ===============================
     public Map<String, String> login(LoginRequest request) {
 
         Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
@@ -54,6 +64,7 @@ public class AuthService {
 
         response.put("token", token);
         response.put("role", user.getRole().name());
+        response.put("email", user.getEmail()); // IMPORTANT
 
         return response;
     }
